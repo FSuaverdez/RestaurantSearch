@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import yelp from '../api/yelp';
 import useResults from '../hooks/useResults';
@@ -11,10 +11,10 @@ const SearchScreen = () => {
 
     const filterResultsByPrice = (price) => {
         return results.filter((result) => {
-            if (result.price) {    
+            if (result.price) {
                 return result.price.length === price;
             } else {
-                if(price===1){
+                if (price === 1) {
                     return true;
                 }
             }
@@ -22,27 +22,33 @@ const SearchScreen = () => {
     };
 
     return (
-        <View>
+        <>
             <SearchBar
                 term={term}
                 onTermChange={setTerm}
                 onTermSubmit={() => searchApi(term)}
             />
             {errorMessage ? <Text>{errorMessage}</Text> : null}
-            <Text>We have found {results.length} results.</Text>
-            <ResultsList
-                title='Cost Effective'
-                results={filterResultsByPrice(1)} />
-            <ResultsList
-                title='Big Pricier'
-                results={filterResultsByPrice(2)} />
-            <ResultsList
-                title='Big Speder'
-                results={filterResultsByPrice(3)} />
-        </View>
+            <ScrollView>
+                <ResultsList
+                    title='Cost Effective'
+                    results={filterResultsByPrice(1)} />
+                <ResultsList
+                    title='Big Pricier'
+                    results={filterResultsByPrice(2)} />
+                <ResultsList
+                    title='Big Speder'
+                    results={filterResultsByPrice(3)} />
+            </ScrollView>
+        </>
     )
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container:{
+        flex:1
+        
+    }
+});
 
 export default SearchScreen;
